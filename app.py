@@ -10,6 +10,9 @@ TENNESSEE_ORANGE = "rgb(255, 130, 0)"
 BLACK = "rgb(0, 0, 0)"
 WARM_GRAY = "rgb(232, 227, 220)"
 DARK_GRAY = "rgb(75, 75, 75)"
+LINKEDIN_URL = "https://www.linkedin.com/in/kori-p-865jct"
+GITHUB_URL = "https://github.com/koripickle1101-TN/priorauthiq-portfolio"
+EMAIL_ADDRESS = "koripickle1101@gmail.com"
 
 st.markdown(
     """
@@ -102,6 +105,11 @@ st.markdown(
         text-align: center;
         color: rgb(75, 75, 75);
     }
+    a {
+        color: rgb(255, 130, 0);
+        text-decoration: none;
+        font-weight: 600;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -117,6 +125,10 @@ with st.sidebar:
     st.write("Portfolio project")
     st.write("PriorAuthIQ")
     st.write("Status Active")
+    st.markdown("---")
+    st.markdown(f"[LinkedIn]({LINKEDIN_URL})")
+    st.markdown(f"[Email](mailto:{EMAIL_ADDRESS})")
+    st.markdown(f"[GitHub]({GITHUB_URL})")
 
 st.markdown(
     """
@@ -175,16 +187,16 @@ st.write("I believe healthcare operations is most effective when administrative 
 st.write("My goal is to contribute to healthcare organizations through thoughtful analysis structured problem solving and continuous operational improvement.")
 
 st.markdown("<div class='section-title'>Contact</div>", unsafe_allow_html=True)
-st.write("LinkedIn")
-st.write("Email")
-st.write("GitHub")
+st.markdown(f"[LinkedIn]({LINKEDIN_URL})")
+st.markdown(f"[Email](mailto:{EMAIL_ADDRESS})")
+st.markdown(f"[GitHub Portfolio Repository]({GITHUB_URL})")
 
 st.markdown(
-    """
+    f"""
     <div class="footer">
         <div>Created by Kori Pickle</div>
         <div class="signature">Kori Pickle</div>
-        <div>LinkedIn  GitHub</div>
+        <div><a href="{LINKEDIN_URL}">LinkedIn</a> &nbsp; <a href="{GITHUB_URL}">GitHub</a></div>
     </div>
     """,
     unsafe_allow_html=True,
