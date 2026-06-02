@@ -3,7 +3,7 @@ import streamlit as st
 st.set_page_config(
     page_title="Kori Pickle Portfolio",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 TENNESSEE_ORANGE = "rgb(255, 130, 0)"
@@ -137,7 +137,7 @@ st.write("Today I study healthcare systems through the lens of workflow design c
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.markdown("<div class='card'><div class='node'>1</div><div class='card-title'>Current Status</div><p>BSHA Candidate<br>Three Point Six GPA<br>Ninety Nine Completed Credits</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'><div class='node'>1</div><div class='card-title'>Current Status</div><p>BSHA Candidate<br>3.6 GPA<br>99 Completed Credits</p></div>", unsafe_allow_html=True)
 with col2:
     st.markdown("<div class='card'><div class='node'>2</div><div class='card-title'>Professional Focus</div><p>Healthcare operations<br>Patient access<br>Revenue cycle performance</p></div>", unsafe_allow_html=True)
 with col3:
