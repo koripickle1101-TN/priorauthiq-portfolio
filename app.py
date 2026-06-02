@@ -159,6 +159,81 @@ st.markdown("<div class='section-title'>What Is PriorAuthIQ</div>", unsafe_allow
 st.write("PriorAuthIQ is a healthcare operations portfolio project that explores how organizations can reduce authorization delays improve operational visibility strengthen governance and better understand payer behavior.")
 st.write("The platform was built to demonstrate healthcare systems thinking and operational analysis. It is a portfolio demonstration rather than a production healthcare software system.")
 
+st.markdown("<div class='section-title'>Denial Risk Calculator</div>", unsafe_allow_html=True)
+st.write("This interactive portfolio tool demonstrates how documentation readiness payer behavior and clinical urgency can be translated into a simple prior authorization risk score before submission.")
+calc_left, calc_right = st.columns(2)
+with calc_left:
+    documentation = st.selectbox(
+        "Documentation completeness",
+        ["Complete", "Minor gaps", "Major gaps", "Missing required documentation"]
+    )
+    payer_volatility = st.selectbox(
+        "Payer volatility",
+        ["Low", "Moderate", "High", "Severe"]
+    )
+    clinical_urgency = st.selectbox(
+        "Clinical urgency",
+        ["Routine", "High", "Urgent", "Critical"]
+    )
+    service_line = st.selectbox(
+        "Service line",
+        ["Routine outpatient", "Advanced imaging", "Specialty pharmacy", "Surgery", "Cardiology", "Oncology"]
+    )
+with calc_right:
+    missing_imaging = st.checkbox("Missing prerequisite imaging")
+    missing_therapy = st.checkbox("Missing conservative therapy history")
+    unsigned_order = st.checkbox("Unsigned physician order")
+    payer_step_therapy = st.checkbox("Payer requires step therapy")
+
+score = 0
+score += {"Complete": 0, "Minor gaps": 10, "Major gaps": 25, "Missing required documentation": 40}[documentation]
+score += {"Low": 0, "Moderate": 10, "High": 20, "Severe": 30}[payer_volatility]
+score += {"Routine": 0, "High": 10, "Urgent": 20, "Critical": 30}[clinical_urgency]
+score += {"Routine outpatient": 0, "Advanced imaging": 5, "Specialty pharmacy": 10, "Surgery": 15, "Cardiology": 20, "Oncology": 25}[service_line]
+if missing_imaging:
+    score += 20
+if missing_therapy:
+    score += 15
+if unsigned_order:
+    score += 5
+if payer_step_therapy:
+    score += 10
+score = min(score, 100)
+
+if score >= 75:
+    risk_tier = "Severe Risk"
+    recommended_action = "Do not submit yet. Route to clinical escalation or peer to peer preparation."
+    owner = "Clinical Documentation Specialist and Physician Reviewer"
+    patient_access_risk = "High"
+    revenue_cycle_risk = "High"
+elif score >= 40:
+    risk_tier = "Elevated Risk"
+    recommended_action = "Pend submission. Route to authorization specialist for manual chart review and addendum request."
+    owner = "Authorization Specialist and Revenue Cycle Supervisor"
+    patient_access_risk = "Moderate"
+    revenue_cycle_risk = "Moderate"
+else:
+    risk_tier = "Low Risk"
+    recommended_action = "Proceed with submission and continue routine status monitoring."
+    owner = "Authorization Specialist"
+    patient_access_risk = "Low"
+    revenue_cycle_risk = "Low"
+
+result_one, result_two, result_three = st.columns(3)
+with result_one:
+    st.metric("Risk Score", f"{score} out of 100")
+with result_two:
+    st.metric("Risk Tier", risk_tier)
+with result_three:
+    st.metric("Operational Owner", owner)
+
+st.write("Recommended Action")
+st.write(recommended_action)
+st.write("Patient Access Risk")
+st.write(patient_access_risk)
+st.write("Revenue Cycle Risk")
+st.write(revenue_cycle_risk)
+
 st.markdown("<div class='section-title'>What This Project Demonstrates</div>", unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
 with col1:
