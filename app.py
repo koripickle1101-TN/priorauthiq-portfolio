@@ -234,6 +234,67 @@ st.write(patient_access_risk)
 st.write("Revenue Cycle Risk")
 st.write(revenue_cycle_risk)
 
+st.markdown("<div class='section-title'>Command Center Demo Dashboard</div>", unsafe_allow_html=True)
+st.write("This dashboard demonstrates how prior authorization inventory can be translated into daily operational visibility for healthcare teams.")
+
+critical_cases = st.slider("Critical cases", 0, 50, 18)
+high_risk_cases = st.slider("High risk cases", 0, 150, 94)
+routine_cases = st.slider("Routine cases", 0, 500, 312)
+average_turnaround = st.slider("Average turnaround time in hours", 0, 120, 32)
+first_pass_rate = st.slider("First pass approval rate", 0, 100, 89)
+cases_over_48 = st.slider("Cases over 48 hours", 0, 150, 42)
+
+open_cases = critical_cases + high_risk_cases + routine_cases
+revenue_at_risk = critical_cases * 8200 + high_risk_cases * 5400 + routine_cases * 1800
+escalation_pressure = critical_cases + cases_over_48
+
+metric_one, metric_two, metric_three, metric_four = st.columns(4)
+with metric_one:
+    st.metric("Open Cases", open_cases)
+with metric_two:
+    st.metric("Revenue at Risk", f"${revenue_at_risk:,.0f}")
+with metric_three:
+    st.metric("Average TAT", f"{average_turnaround} hours")
+with metric_four:
+    st.metric("First Pass Rate", f"{first_pass_rate}%")
+
+queue_one, queue_two, queue_three = st.columns(3)
+with queue_one:
+    st.markdown("<div class='card'><div class='card-title'>Critical Queue</div><p>Cases requiring immediate visibility because clinical urgency is high.</p></div>", unsafe_allow_html=True)
+    st.progress(min(critical_cases / 50, 1.0))
+with queue_two:
+    st.markdown("<div class='card'><div class='card-title'>High Risk Queue</div><p>Cases requiring documentation review escalation monitoring or payer follow up.</p></div>", unsafe_allow_html=True)
+    st.progress(min(high_risk_cases / 150, 1.0))
+with queue_three:
+    st.markdown("<div class='card'><div class='card-title'>Routine Queue</div><p>Standard authorizations that still require tracking to avoid silent delays.</p></div>", unsafe_allow_html=True)
+    st.progress(min(routine_cases / 500, 1.0))
+
+st.write("Top Delay Drivers")
+delay_driver = st.radio(
+    "Select the leading delay driver",
+    ["Missing clinical documentation", "Incomplete conservative therapy history", "Pending physician signature", "Payer medical necessity review"]
+)
+
+if average_turnaround > 48 or cases_over_48 > 40:
+    command_status = "Red Status"
+    command_action = "Escalate overdue cases to operations manager and prioritize high acuity pathways."
+elif average_turnaround > 24 or first_pass_rate < 90:
+    command_status = "Yellow Status"
+    command_action = "Review documentation gaps and monitor payer response times closely."
+else:
+    command_status = "Green Status"
+    command_action = "Maintain routine monitoring and continue standard queue clearance."
+
+status_one, status_two = st.columns(2)
+with status_one:
+    st.metric("Command Center Status", command_status)
+    st.metric("Escalation Pressure", escalation_pressure)
+with status_two:
+    st.write("Recommended Operational Action")
+    st.write(command_action)
+    st.write("Current Leading Delay Driver")
+    st.write(delay_driver)
+
 st.markdown("<div class='section-title'>What This Project Demonstrates</div>", unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
 with col1:
